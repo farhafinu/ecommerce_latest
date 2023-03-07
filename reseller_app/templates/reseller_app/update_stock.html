@@ -1,0 +1,146 @@
+{% extends 'reseller_app/reseller_master.html' %}
+{% load static %}
+
+
+{% block content %}
+<style>
+  .centering {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 100%;
+  }
+
+  table {
+    align-items: center;
+    margin-left: 33%;
+    margin-right: auto;
+
+    display: block;
+  }
+
+  @media(max-width:500px) {
+    table {
+      margin-left: 0%;
+    }
+  }
+
+  @media(max-width:700px) {
+    table {
+      margin-left: 5%;
+    }
+  }
+</style>
+
+<h1 style="text-align: center;font-weight: bolder;font-family: Georgia, 'Times New Roman', Times, serif;color: brown;">
+  UPDATE STOCK</h1><br>
+<form class="product-form form-inline" method="POST">
+  {% csrf_token %}
+  <div class="centering">
+    <table>
+      <tr>
+        <td><label for="exampleFormControlSelect1" class="lable m-3">Select Category</label></td>
+        <td> <select class="form-control drop format  d-inline" id="category">
+          <option>select category</option>
+            <option>Clothing</option>
+            <option>Electronics</option>
+            <option>Shoes</option>
+            <option>Watches</option>
+            <option>Jewellery</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td><label for="exampleFormControlSelect1" class="lable m-3">Product No</label></td>
+
+        <td>
+          <select class="form-control drop format  d-inline" id="p_no" name="pno">
+            
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="exampleFormControlInput1" class="lable d-inline m-3">Current Stock</label>
+
+        </td>
+        <td>
+          <input type="text" class="form-control  format d-inline" readonly id="c_stock" placeholder="" name="c_stock">
+
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="exampleFormControlInput1" class="lable d-inline m-3">New Stock</label>
+
+        </td>
+        <td>
+          <input type="text" class="form-control  format d-inline" id="n_stock" placeholder="" name="n_stock">
+
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="2" align="left">
+
+          <button type="submit" class="btn btn-danger w-50 ml-4"
+            style="position: relative;left:100px;top:20px;width: 100px">Update</button>
+
+        </td>
+        <td>
+          {{msg}}
+        </td>
+      </tr>
+    </table>
+  </div>
+</form>
+
+
+<script>
+  $(document).ready(function () {
+    $.ajaxSetup({
+      headers: {
+        "X-CSRFToken": $('[name=csrfmiddlewaretoken]').val()
+      }
+    })
+
+    $('#category').change(function () {
+      var category = $('#category').val()
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'reseller:get_product' %}",
+        data: {
+          'category': category
+        },
+        success: function (response) {
+          data = response.data
+
+          $('#p_no option').empty();
+          $('#p_no').append($('<option>').text('select a product').attr('value',''));
+          for (i in data) {
+           $('#p_no').append($('<option>').text(data[i].p_number).attr('value',data[i].id));
+          }
+          
+
+        }
+      })
+
+      $('#p_no').click(function () {
+        var p_no = $('#p_no option:selected').val()
+        $.ajax({
+          type: 'POST',
+          url: "{% url 'reseller:get_stock' %}",
+          data: {
+            'p_no': p_no
+          },
+          success: function (response) {
+            data = response.data
+            $('#c_stock').val(data[0].p_stock)
+          }
+        })
+      })
+    })
+  })
+</script>
+
+{% endblock %}

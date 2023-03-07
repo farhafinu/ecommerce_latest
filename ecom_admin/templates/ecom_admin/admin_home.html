@@ -1,0 +1,48 @@
+{% extends 'ecom_admin/admin_master.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+      <h1 style="color: maroon; font-family: Georgia, 'Times New Roman', Times, serif; font-weight: 700; text-align: center; margin-bottom: 2%;" >
+        Welcome Admin 
+      </h1>
+
+
+
+
+<div class="row">
+  <div class="col-12 col-md-6">
+    <div class="card" style="width: 100%; margin-top: 3%;">
+
+      <div class="card-body">
+        <h2 class="card-title">Customer Count</h2>
+        <p class="card-text">
+        <h3>{{customer_count}}</h3>
+        </p>
+        <!-- to display the count of customers,The count function is calling from views.py[count()] and the count of the customer is passing from views.py-->
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-6">
+    <div class="card" style="width: 100%; margin-top: 3%;">
+
+      <div class="card-body">
+        <h2 class="card-title">Seller Count</h2>
+        <p class="card-text">
+        <h3>{{seller_count}}</h3>
+        </p>
+        <!-- To display the count of resellers,The count function is calling from views.py[count()] -->
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+{% endblock %}

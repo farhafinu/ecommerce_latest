@@ -1,0 +1,126 @@
+{% extends 'reseller_app/reseller_master.html' %}
+{% load static %}
+
+
+{% block content %}
+<style>
+
+    #customers {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse:collapse;
+        width: 100%;
+      }
+      
+      #customers td, #customers th {
+        border: 1px solid #ddd;
+        padding: 3px;
+        font-size: 1rem;
+      }
+      
+      #customers tr:nth-child(even){background-color: #f2f2f2;}
+      
+      #customers tr:hover {background-color: #ddd;}
+      
+      #customers th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: #04AA6D;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        color: white;
+      }
+      @media(max-width:500px){
+        #customers {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse:collapse;
+        width: 90%;
+      }
+      
+      #customers td, #customers th {
+        border: 1px solid #ddd;
+        padding: 3px;
+        font-size: 10px;
+      }
+      
+      #customers tr:nth-child(even){background-color: #f2f2f2;}
+      
+      #customers tr:hover {background-color: #ddd;}
+      
+      #customers th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: #04AA6D;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        color: white;
+      }
+    }
+    
+    @media(max-width:700px){
+        #customers {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse:collapse;
+        width: 100%;
+      }
+      
+      #customers td, #customers th {
+        border: 1px solid #ddd;
+        padding: 3px;
+        font-size: 11px;
+      }
+      
+      #customers tr:nth-child(even){background-color: #f2f2f2;}
+      
+      #customers tr:hover {background-color: #ddd;}
+      
+      #customers th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: #04AA6D;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        color: white;
+      }
+    }
+      </style>
+<div class="container">
+<h1 style="text-align: center;font-weight: bolder;font-family: Georgia, 'Times New Roman', Times, serif;color: brown;">ORDER HISTORY</h1><br>
+<form class="product-form"  >
+
+    <table id="customers">
+        <tr>
+            <th>Sl.No</th>
+            <th> Date</th>
+            <th>Product No</th>
+            <th>Product Name</th>
+            <th>Customer Name</th>
+            <th>Mobile No</th>
+            <th>Ship Address</th>
+            <th>Qty</th>
+            <th> Amount</th>
+            
+        </tr>
+        {% for order in details %}
+        {% if order.status == 'paid' %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{order.date}}</td>
+            <td>{{order.productid.p_number}}</td>
+            <td>{{order.productid.p_name}}</td>
+            <td>{{order.customer.first_name}} &nbsp; {{oder.customer.last_name}}</td>
+            <td>{{order.customer.mobile}}</td>
+            <td>{{order.customer.address}}</td>
+            <td>{{order.quantity}}</td>
+            <td>{{order.price}}</td>
+             
+        </tr>
+        {% endif %}
+        {% endfor %}
+       
+      
+      </table> 
+
+
+</form>
+</div>
+{% endblock %}

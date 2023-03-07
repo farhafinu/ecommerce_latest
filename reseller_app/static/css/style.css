@@ -1,0 +1,41 @@
+
+.file{
+     /* background-color: gray;  */
+     border: none;
+     /* color: white; */
+     /* padding: 15px 32px; */
+     font-family: Georgia, 'Times New Roman', Times, serif;
+     text-align: center;
+     text-decoration: none;
+     display: inline-block;
+     font-size: 16px;
+    }
+    
+   .ad{
+        text-align: center;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size: xx-large;
+    }
+
+    .lable{
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size:medium;
+        
+    }
+
+    .drop{
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size:medium;
+    }
+    .format{
+        width: 60%;
+    
+    }
+    .product-form{
+    position: relative;
+    left: 100px;
+    }
+
+ 
+
+     

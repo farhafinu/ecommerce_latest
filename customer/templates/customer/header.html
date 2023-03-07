@@ -1,0 +1,550 @@
+
+{% load static %}
+<header class="header-style-1">
+
+
+  <div class="top-bar animate-dropdown">
+    <div class="container">
+      <div class="header-top-inner">
+        <div class="cnt-account">
+          <ul class="list-unstyled">
+            {% if  'c_id' in request.session %}
+            <li class="myaccount"><a href="{% url 'customer:my-account' %}"><span>My Account</span></a></li>
+            <li class="wishlist"><a href="{% url 'customer:order' %}"><span>My Order</span></a></li>
+            <li class="header_cart hidden-xs"><a href="{%  url 'customer:view_cart' %}"><span>My Cart</span></a></li>
+            {% endif %}
+            {% if not 'c_id' in request.session %}
+            <li> <a href="#signup" data-toggle="modal" data-target=".log-sign">Login</a></li>
+           
+            {% else %}
+            <li> <a href="{% url 'customer:c_logout' %}" data-toggle="" data-target="">Logout</a></li>
+
+            {% endif %}
+          </ul>
+        </div>
+
+
+        <!-- customer modal starts -->
+        <div class="modal fade bs-modal-sm log-sign" id="myModal" tabindex="-1" role="dialog"
+          aria-labelledby="mySmallModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+              <div class="bs-example bs-example-tabs">
+                <ul id="myTab" class="nav nav-tabs">
+                  <li id="tab1" class=" active tab-style login-shadow "><a href="#signin" data-toggle="tab">Log In</a>
+                  </li>
+                  <li id="tab2" class=" tab-style "><a href="#signup" data-toggle="tab">Sign Up</a></li>
+
+                </ul>
+              </div>
+              <div class="modal-body">
+                <div id="myTabContent" class="tab-content">
+
+                  <div class="tab-pane fade active in" id="signin">
+                    <form class="form-horizontal" method="POST" action="{% url 'customer:home' %}">
+                      {% csrf_token %}
+                      <fieldset>
+
+                        <div class="group">
+                          <input required class="input" type="text" name = 'c_user_id'><span class="highlight"></span><span
+                            class="bar"></span>
+                          <label class="label" for="date">Email address</label>
+                        </div>
+
+
+
+                        <div class="group">
+                          <input required class="input" type="password" name="c_user_passwd"><span class="highlight"></span><span
+                            class="bar"></span>
+                          <label class="label" for="date">Password</label>
+                        </div>
+                        <em>minimum 6 characters</em>
+
+                        <div class="forgot-link">
+                          <a href="#forgot" data-toggle="modal" data-target="#forgot-password"> I forgot my
+                            password</a>
+                        </div>
+
+
+                        <div class="control-group">
+                          <label class="control-label" for="signin"></label>
+                          <div class="controls">
+                            <button id="signin" type="submit" name="c_login" class="btn btn-primary btn-block">Log In</button>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </form>
+                  </div>
+                 
+
+                          <!-- sign up customer form -->
+                  <div class="tab-pane fade" id="signup">
+                    <form class="form-horizontal" method="POST" action="{% url 'customer:home' %}">
+                      {% csrf_token %}
+                      <fieldset>
+
+                        <div class="group">
+                          <input class="input" name="fname" type="text" id="fst_name"><span
+                            class="highlight"></span><span class="bar"></span><span id="f_name"></span>
+                          <label class="label" for="date">First Name</label>
+                        </div>
+
+                        <!-- Text input-->
+                        <div class="group">
+                          <input  class="input" name="sname" type="text" id="lst_name"><span class="highlight"></span><span
+                            class="bar"></span><span id="l_name"></span>
+                          <label class="label" for="date">Last Name</label>
+                        </div>
+
+                        <div class="group">
+                          <!-- check  -->
+                          <textarea name="c_addrs" id="c_address" cols="50" rows="3" class="input"></textarea><span
+                            class="highlight"></span><span class="bar"></span><span id="c_addrs"></span>
+                          <!-- <input required class="input" type="text"><span class="highlight"></span><span
+                            class="bar"></span> -->
+                          <label class="label" for="date">Address</label>
+                        </div>
+
+                        <!-- Password input-->
+                        <div class="group">
+                          <input class="input" name="c_email" type="text" id="c_mail"><span
+                            class="highlight"></span><span class="bar"></span><span id="mail_c"></span>
+                          <label class="label" for="date">Email</label>
+                          <span id="message"></span>
+                        </div>
+
+                        <div class="group">
+                          <input class="input" name="c_phno" type="text" id="c_mob" required><span
+                            class="highlight"></span><span class="bar"></span>
+                          <label class="label" for="date">Mobile</label>
+                        </div>
+
+                        
+
+                        <!-- Text input-->
+                        <div class="group">
+                          <input  class="input" name="c_passwd" type="password" id="c_pass"><span
+                            class="highlight"></span><span class="bar"></span><span id="c_pswd"></span>
+                          <label class="label" for="date">Password</label>
+                        </div>
+                        <em>1-8 Characters</em>
+
+                        <div class="control-group">
+                          <label class="control-label" for="c_signup"></label>
+                          <div class="controls">
+                            <button id="confirmsignup" name="c_signup" class="btn btn-primary btn-block" type="submit" onclick="c_validation()">Sign
+                              Up</button>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- customer modal ends -->
+        <script>
+          $(document).ready(function(){
+            $.ajaxSetup({
+                headers: {
+                  "X-CSRFToken": $('[name=csrfmiddlewaretoken]').val()
+                }
+            })
+            $('#c_mail').change(function(){
+                var email = $('#c_mail').val()
+                $.ajax({
+                    type:'POST',
+                    url:"{% url 'customer:e_exists' %}",
+                    data:{
+                        'email':email
+                    },
+                    success:function(response){
+                        if (response.status == true)
+                        {
+                            $('#message').html('email exists')
+                            $('#message').css("color","red")
+                            console.log('email exists')
+                        }
+                        else
+                        {
+                            $('#message').html('email available')
+                            $('#message').css("color","black")
+                            console.log('email available')
+                        }
+                        console.log(response.status)
+                    }
+
+                })
+            })
+        })
+        </script>
+
+
+
+        <!-- seller modal start  -->
+
+
+        <div class="modal fade bs-modal-sm seller-log" id="sellermodal" tabindex="-1" role="dialog"
+          aria-labelledby="mySmallModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+              <div class="bs-example bs-example-tabs">
+                <ul id="myTab" class="nav nav-tabs">
+                  <li id="tab1" class=" active tab-style login-shadow "><a href="#seller-login" data-toggle="tab">Log
+                      In</a>
+                  </li>
+                  <li id="tab2" class=" tab-style "><a href="#seller-signup" data-toggle="tab">Sign Up</a></li>
+
+                </ul>
+              </div>
+              <div class="modal-body">
+                <div id="myTabContent" class="tab-content">
+
+                  <div class="tab-pane fade active in" id="seller-login">
+                    <form class="form-horizontal" method="POST" >
+                      {% csrf_token %}
+                      <fieldset>
+
+                        <div class="group">
+                          <input required class="input" type="text" name="s_mail"><span class="highlight"></span><span
+                            class="bar"></span>
+                          <label class="label" for="date">Email address</label>
+                        </div>
+
+
+
+                        <div class="group">
+                          <input required class="input" type="password" name="s_pass"><span class="highlight"></span><span
+                            class="bar"></span>
+                          <label class="label" for="date">Password</label>
+                        </div>
+                        <em>minimum 6 characters</em>
+
+                        <div class="forgot-link">
+                          <a href="#forgot" data-toggle="modal" data-target="#forgot-password"> I forgot my
+                            password</a>
+                        </div>
+
+
+                        <div class="control-group">
+                          <label class="control-label" for="signin"></label>
+                          <div class="controls">
+                            <button id="signin" name="signin" class="btn btn-primary btn-block">Log In</button>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </form>
+                  </div>
+
+                 <!-- seller signup form -->
+                  <div class="tab-pane fade" id="seller-signup">
+                    <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <fieldset>
+
+                        <!-- name input  -->
+
+                        <div class="group">
+                          <input  class="input" name="s_name" type="text" id="i_s_name">
+                          <span class="highlight"></span><span class="bar"></span>
+                          <span id="s_s_name"></span>
+                          <label class="label" for="name">Name</label>
+                        </div>
+                        <!-- address  -->
+                        <div class="group">
+                          <textarea name="s_address" id="i_s_address" cols="50" rows="3" class="input"></textarea><span
+                            class="highlight"></span><span class="bar"></span>
+                            <span id="s_s_address"></span>
+                          <!-- <input required class="input" type="text"><span class="highlight"></span><span
+                            class="bar"></span> -->
+                          <label class="label" for="date">Address</label>
+                        </div>
+                        <!-- Text input email-->
+                        <div class="group">
+                          <input  class="input" name="s_email" type="text" id="i_s_email"><span
+                            class="highlight"></span><span class="bar"></span>
+                            <span id="s_s_email"></span>
+                          <label class="label" for="date">Email</label>
+                        </div>
+
+                        <!-- Password input-->
+                        <div class="group">
+                          <input class="input" name="s_mobile" type="text" id="i_s_mobile"><span
+                            class="highlight"></span><span class="bar"></span>
+                            <span id="s_s_mobile"></span>
+                          <label class="label" for="date">Mobile</label>
+                        </div>
+
+                        <!-- account name  -->
+                        <div class="group">
+                          <input  class="input" name="s_acholder" type="text" id="i_s_acname"><span
+                            class="highlight"></span><span class="bar"></span>
+                            <span id="s_s_acname"></span>
+                          <label class="label" for="date">Account Holder Name</label>
+                        </div>
+
+                        <!-- account no  -->
+
+                        <div class="group">
+                          <input  class="input" name="s_account" type="text" id="s_s_acno"><span
+                            class="highlight"></span><span class="bar"></span>
+                            <span id="s_s_acno"></span>
+                          <label class="label" for="date">Account Number</label>
+                        </div>
+
+
+
+                        <!-- ifsc  -->
+
+                        <div class="group">
+                          <input  class="input" name="s_ifsc" type="text" id="i_s_ifsc"><span
+                            class="highlight"></span><span class="bar" ></span>
+                            <span id="s_s_ifsc"></span>
+                          <label class="label" for="date">IFSC</label>
+                        </div>
+
+                        <!-- image  -->
+
+
+
+                        <div class="group">
+                          <input type="file" id="myFile" name="pic" class="input" ><span
+                            class="highlight"></span><span class="bar"></span>
+                            <span id="s_s_image"></span>
+                          <label for="" class="lable">Upload Image</label>
+
+
+                        </div>
+
+                        <!-- Text input password-->
+                        <div class="group">
+                          <input  class="input" name="s_password" type="password" id="i_s_pwd"><span
+                            class="highlight"></span><span class="bar"></span>
+                            <span id="s_s_pwd"></span>
+                          <label class="label" for="date">Password</label>
+                        </div>
+                        <em>1-8 Characters</em>
+
+                        <!-- Button -->
+                        <div class="control-group">
+                          <label class="control-label" for="s_signup"></label>
+                          <div class="controls">
+                            <a href="{% url 'reseller:reseller_home' %}">
+                              <button id="confirmsignup" name="s_signup" class="btn btn-primary btn-block" onclick="s_validation()">Sign
+                                Up</button> 
+                            </a>
+                            
+                          </div>
+                        </div>
+                      </fieldset>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- seller modal end  -->
+        <script>
+          
+        </script>
+        <!-- /.cnt-account -->
+
+        <div class="cnt-block">
+          <ul class="list-unstyled list-inline">
+            <li class="dropdown dropdown-small"> <a href="#" class="dropdown-toggle" data-hover="dropdown"
+                data-toggle="dropdown"><span class="value">USD </span><b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">USD</a></li>
+                <li><a href="#">INR</a></li>
+                <li><a href="#">GBP</a></li>
+              </ul>
+            </li>
+            <li class="dropdown dropdown-small lang"> <a href="#" class="dropdown-toggle" data-hover="dropdown"
+                data-toggle="dropdown"><span class="value">English </span><b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">English</a></li>
+                <li><a href="#">French</a></li>
+                <li><a href="#">German</a></li>
+              </ul>
+            </li>
+          </ul>
+          <!-- /.list-unstyled -->
+        </div>
+        <!-- /.cnt-cart -->
+        <div class="clearfix"></div>
+      </div>
+      <!-- /.header-top-inner -->
+    </div>
+    <!-- /.container -->
+  </div>
+  <!-- /.header-top -->
+  <!-- ============================================== TOP MENU : END ============================================== -->
+  <div class="main-header" style="background-color: #0088f4;">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-3 logo4-holder">
+          <!-- ============================================================= LOGO ============================================================= -->
+ <div class="logo5"> <a href="home.html"> <img src="{% static 'images/logo4.png' %}" alt="logo5" height="100px" width="150px">
+            </a> </div> 
+          <!-- /.logo -->
+          <!-- ============================================================= LOGO : END ============================================================= -->
+        </div>
+        <!-- /.logo-holder -->
+
+        <div class="col-lg-7 col-md-6 col-sm-8 col-xs-12 top-search-holder">
+          <!-- /.contact-row -->
+          <!-- ============================================================= SEARCH AREA ============================================================= -->
+          <div class="search-area">
+            <form>
+              <div class="control-group">
+                <ul class="categories-filter animate-dropdown">
+                  <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown"
+                      href="category.html">Categories <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                      <li class="menu-header">Computer</li>
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Clothing</a>
+                      </li>
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Electronics</a>
+                      </li>
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Shoes</a></li>
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Watches</a></li>
+                    </ul>
+                  </li>
+                </ul>
+                <input class="search-field" placeholder="Search here..." />
+                <a class="search-button" href="#"></a>
+              </div>
+            </form>
+          </div>
+          <!-- /.search-area -->
+          <!-- ============================================================= SEARCH AREA : END ============================================================= -->
+        </div>
+        <!-- /.top-search-holder -->
+
+        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 animate-dropdown top-cart-row">
+          <!-- ============================================================= SHOPPING CART DROPDOWN ============================================================= -->
+
+          <div class="dropdown dropdown-cart"> <a href="#" class="dropdown-toggle lnk-cart">
+              <div class="items-cart-inner">
+                <div class="basket">
+                  <div class="basket-item-count"><span class="count">2</span></div>
+                  <div class="total-price-basket"> <span class="lbl">Shopping Cart</span> <span
+                      class="value">$4580</span> </div>
+                </div>
+              </div>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <div class="cart-item product-summary">
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <div class="image"> <a href="detail.html"><img src="{% static 'images/products/p4.jpg' %}"
+                            alt=""></a> </div>
+                    </div>
+                    <div class="col-xs-7">
+                      <h3 class="name"><a href="index8a95.html?page-detail">Simple Product</a></h3>
+                      <div class="price">$600.00</div>
+                    </div>
+                    <div class="col-xs-1 action"> <a href="#"><i class="fa fa-trash"></i></a> </div>
+                  </div>
+                </div>
+                <!-- /.cart-item -->
+                <div class="clearfix"></div>
+                <hr>
+                <div class="clearfix cart-total">
+                  <div class="pull-right"> <span class="text">Sub Total :</span><span class='price'>$600.00</span>
+                  </div>
+                  <div class="clearfix"></div>
+                  <a href="checkout.html" class="btn btn-upper btn-primary btn-block m-t-20">Checkout</a>
+                </div>
+                <!-- /.cart-total-->
+
+              </li>
+            </ul>
+            <!-- /.dropdown-menu-->
+          </div>
+          <!-- /.dropdown-cart -->
+
+          <!-- ============================================================= SHOPPING CART DROPDOWN : END============================================================= -->
+        </div>
+        <!-- /.top-cart-row -->
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+  </div>
+  <!-- /.main-header -->
+
+  <!-- ============================================== NAVBAR ============================================== -->
+  <div class="header-nav animate-dropdown">
+    <div class="container">
+      <div class="yamm navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <button data-target="#mc-horizontal-menu-collapse" data-toggle="collapse" class="navbar-toggle collapsed"
+            type="button">
+            <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+              class="icon-bar"></span> <span class="icon-bar"></span> </button>
+        </div>
+        <div class="nav-bg-class">
+          <div class="navbar-collapse collapse" id="mc-horizontal-menu-collapse">
+            <div class="nav-outer">
+              <ul class="nav navbar-nav">
+                <li class="active dropdown"> <a href="{% url 'customer:home' %}">Home</a> </li>
+                <li class="dropdown yamm mega-menu"> <a href="home.html" class="dropdown-toggle"
+                    data-toggle="dropdown">Clothing</a>
+                  <ul class="dropdown-menu container">
+                    <li>
+
+                    </li>
+                  </ul>
+                </li>
+                <li class="dropdown mega-menu">
+                  <a href="category.html" class="dropdown-toggle" data-toggle="dropdown">Electronics <span
+                      class="menu-label hot-menu hidden-xs">hot</span> </a>
+                  <ul class="dropdown-menu container">
+                    <li>
+                    </li>
+                  </ul>
+                </li>
+                <li class="dropdown hidden-sm"> <a href="category.html">Health & Beauty <span
+                      class="menu-label new-menu hidden-xs">new</span> </a> </li>
+                <li class="dropdown hidden-sm"> <a href="category.html">Watches</a> </li>
+                <li class="dropdown"> <a href="contact.html">Jewellery</a> </li>
+                <li class="dropdown"> <a href="contact.html">Shoes</a> </li>
+                <li class="dropdown"> <a href="contact.html">Kids & Girls</a> </li>
+                {% if not 'c_id' in request.session %}
+                </li>
+                <li class="dropdown  navbar-right "> <a href="#signup" data-toggle="modal"
+                    data-target=".seller-log">Become a seller</a> </li>
+                  {% endif %}
+              </ul>
+
+
+              <!-- /.navbar-nav -->
+              <div class="clearfix"></div>
+            </div>
+            <!-- /.nav-outer -->
+          </div>
+          <!-- /.navbar-collapse -->
+
+        </div>
+        <!-- /.nav-bg-class -->
+      </div>
+      <!-- /.navbar-default -->
+    </div>
+    <!-- /.container-class -->
+
+  </div>
+  <!-- /.header-nav -->
+  <!-- ============================================== NAVBAR : END ============================================== -->
+
+</header>

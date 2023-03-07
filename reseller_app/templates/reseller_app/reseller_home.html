@@ -1,0 +1,43 @@
+{% extends 'reseller_app/reseller_master.html' %}
+{% load static %}
+
+
+{% block content %}
+<p class="welcome"> Welcome {{seller_details.s_name|upper}} </p>
+<div class="row">
+  <div class="col-1"></div>
+  <div class="col-3">
+      <div class="card" style="width: 18rem;">
+          
+          <div class="card-body">
+            <h2 class="card-title">Product Count</h2>
+            <p class="card-text"> <h3>{{product_count}}</h3></p> 
+            <!-- to display the count of customers,The count function is calling from views.py[count()] and the count of the customer is passing from views.py-->
+            
+          </div>
+        </div>
+  </div>
+  <div class="col-4"></div>
+  <div class="col-3">
+      <div class="card" style="width: 18rem;">
+          
+          <div class="card-body">
+            <h2 class="card-title">Order Count</h2>
+            <p class="card-text"> <h3>{{order_count}}</h3> </p>
+            <!-- To display the count of resellers,The count function is calling from views.py[count()] -->
+            
+          </div>
+        </div>
+
+  </div>
+  <div class="col-1"></div>
+  </div>
+  
+
+
+
+
+
+
+    
+{% endblock %}

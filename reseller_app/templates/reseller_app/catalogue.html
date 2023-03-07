@@ -1,0 +1,86 @@
+{% extends 'reseller_app/reseller_master.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="row" >
+    <div class="col-md-12 col-12">
+       <h1 class="cat-label" style="text-align: center;font-weight: bolder;font-family: Georgia, 'Times New Roman', Times, serif;color: brown;">PRODUCT CATALOGUE</h1> 
+    </div>
+</div>
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-3 col-12 p-2" style=" align-items: center;">
+        <div class="card" style="width: 100%; min-height: 430px;max-height: 420px;">
+            <img src="{{ product.p_image.url }}" class="card-img-top" alt="..." style="max-height: 200px;width: 100%;min-height: 100px;">
+            <div class="card-body" style="max-height: 150px;overflow: hidden;">
+                <h5 class="card-title text-center fw-bold">{{product.p_name}}</h5>
+                <p class="card-text">{{product.p_details}}
+                </p>
+                
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-primary">Edit</a>
+                <a href="#" class="btn btn-danger">{{product.p_stock}}</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+  
+    <!-- <div class="col-md-4 p-2">
+        <div class="card" style="width: 18rem; min-height: 430px;max-height: 420px;">
+            <img src="https://sparepartsonline.in/storage/2018/08/Vivo-Y83-4GB-32gb-mobile-phone.jpg" class="card-img-top" alt="..." style="max-height: 200px;width: 100%;min-height: 100px;">
+            <div class="card-body" style="max-height: 150px;overflow: hidden;">
+                <h5 class="card-title text-center fw-bold">Realme Nazro</h5>
+                <p class="card-text">Samsung Galaxy M53 5G (Mystique Green, 6GB, 128GB Storage) | 108MP | sAmoled+ 120Hz | 12GB RAM with RAM Plus | Travel Adapter to be Purchased Separately
+
+
+                    Samsung Galaxy M53 5G (Mystique Green, 6GB, 128GB Storage) | 108MP | sAmoled+ 120Hz | 12GB RAM with RAM Plus | Travel Adapter to be Purchased Separately lorem
+                </p>
+                
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-primary">Details</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 p-2">
+        <div class="card" style="width: 18rem; min-height: 430px;max-height: 420px;">
+            <img src="https://th.bing.com/th/id/OIP.K4VhFvhhDHqA2od_dB3vkgHaJ4?pid=ImgDet&rs=1" class="card-img-top" alt="..." style="max-height: 200px;width: 100%;min-height: 100px;">
+            <div class="card-body" style="max-height: 150px;overflow: hidden;">
+                <h5 class="card-title text-center fw-bold">Iphone 5s</h5>
+                <p class="card-text">Samsung Galaxy M53 5G (Mystique Green, 6GB, 128GB Storage) | 108MP | sAmoled+ 120Hz | 12GB RAM with RAM Plus | Travel Adapter to be Purchased Separately
+
+
+                    Samsung Galaxy M53 5G (Mystique Green, 6GB, 128GB Storage) | 108MP | sAmoled+ 120Hz | 12GB RAM with RAM Plus | Travel Adapter to be Purchased Separately lorem
+                </p>
+                
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-primary">Details</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 p-2">
+        <div class="card" style="width: 18rem; min-height: 430px;max-height: 420px;">
+            <img src="https://sparepartsonline.in/storage/2018/08/Vivo-Y83-4GB-32gb-mobile-phone.jpg" class="card-img-top" alt="..." style="max-height: 200px;width: 100%;min-height: 100px;">
+            <div class="card-body" style="max-height: 150px;overflow: hidden;">
+                <h5 class="card-title text-center fw-bold">Vivo V7+</h5>
+                <p class="card-text">Samsung Galaxy M53 5G (Mystique Green, 6GB, 128GB Storage) | 108MP | sAmoled+ 120Hz | 12GB RAM with RAM Plus | Travel Adapter to be Purchased Separately
+
+
+                    Samsung Galaxy M53 5G (Mystique Green, 6GB, 128GB Storage) | 108MP | sAmoled+ 120Hz | 12GB RAM with RAM Plus | Travel Adapter to be Purchased Separately lorem
+                </p>
+                
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-primary">Details</a>
+            </div>
+        </div>
+    </div> -->
+      
+</div>
+
+
+
+{% endblock %}

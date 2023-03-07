@@ -1,0 +1,123 @@
+{% extends 'reseller_app/reseller_master.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<style>
+  table{
+    margin-left: 25%;
+    display: block;
+  }
+  
+  @media(max-width:500px){
+    table{
+  margin-left: 0%;
+    }
+}
+
+@media(max-width:700px){
+    table{
+  margin-left: 0%;
+    }
+}
+
+</style>
+
+<h1 style="text-align: center;font-weight: bolder;font-family: Georgia, 'Times New Roman', Times, serif;color: brown;">
+  ADD PRODUCT</h1><br>
+ 
+<form class="product-form form-inline" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <table>
+    <tr>
+      <td><label for="exampleFormControlSelect1" class="lable m-3">Category</label></td>
+      <td> <select class="form-control drop format  d-inline" name="category" id="exampleFormControlSelect1">
+          <option value="clothing">Clothing</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Shoes">Shoes</option>
+          <option value="Watches">Watches</option>
+          <option value="Jewellery">Jewellery</option>
+        </select></td>
+    </tr>
+
+    <tr>
+      <td>
+        <label for="exampleFormControlInput1" class="lable d-inline m-3">Product Name</label>
+      </td>
+      <td>
+        <input type="text" class="form-control  format d-inline" id="exampleFormControlInput1" placeholder=""  name="p_name">
+      </td>
+    </tr>
+
+    <tr>
+
+      <td>
+        <label for="exampleFormControlInput1" class="lable d-inline m-3">Product No</label>
+      </td>
+      <td>
+        <input type="text" class="form-control   format d-inline" id="exampleFormControlInput1" placeholder="" name="p_no" id="p_no">
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <label for="exampleFormControlTextarea1" class="lable d-inline m-3">Product Description</label>
+
+      </td>
+      <td>
+        <textarea class="form-control format  d-inline" style="vertical-align: middle;" id="exampleFormControlTextarea1"
+          rows="3" name="p_description"></textarea>
+
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="exampleFormControlInput1" class="lable d-inline m-3">Price</label>
+
+      </td>
+      <td>
+        <input type="text" class="form-control   format d-inline " id="exampleFormControlInput1" placeholder="" name="p_price">
+
+      </td>
+    </tr>
+
+
+    <tr>
+      <td>
+        <label for="exampleFormControlInput1" class="lable d-inline m-3">Available Stock</label>
+
+      </td>
+      <td>
+        <input type="text" class="form-control  format d-inline" id="exampleFormControlInput1" placeholder="" name="p_astock">
+
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="exampleFormControlTextarea1" class="lable m-3">Upload Image</label>
+
+      </td>
+      <td>
+        <input type="file" id="myFile"  class="form-control"  name="p_photo">
+
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="left">
+        <span><h1 style="color:black">{{status}}</h1></span>
+        <button type="submit" class="btn btn-danger w-50 ml-4"
+          style="position: relative;left:100px;top:20px;width: 100px">Add</button>
+
+      </td>
+    </tr>
+  </table>
+</form>
+
+
+
+
+ 
+
+{% endblock %}
