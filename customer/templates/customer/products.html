@@ -11,12 +11,12 @@
         <div class="head"><i class="icon fa fa-align-justify fa-fw"></i> Categories</div>
         <nav class="yamm megamenu-horizontal">
             <ul class="nav">
-                <li class="dropdown menu-item"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                <li class="dropdown menu-item"> <a href="{% url 'customer:products_filter' 'clothing' %}" ><i
                             class="icon fa fa-shopping-bag" aria-hidden="true"></i>Clothing</a>
                 </li>
 
 
-                <li class="dropdown menu-item"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                <li class="dropdown menu-item"> <a href="{% url 'customer:products_filter' 'electronics' %}" ><i
                             class="icon fa fa-laptop" aria-hidden="true"></i>Electronics</a>
 
                     <ul class="dropdown-menu mega-menu">
@@ -62,14 +62,14 @@
                 </li>
                 <!-- /.menu-item -->
 
-                <li class="dropdown menu-item"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                <li class="dropdown menu-item"> <a href="{% url 'customer:products_filter' 'shoes' %}" ><i
                             class="icon fa fa-paw" aria-hidden="true"></i>Shoes</a>
                      
                     <!-- /.dropdown-menu -->
                 </li>
                 <!-- /.menu-item -->
 
-                <li class="dropdown menu-item"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                <li class="dropdown menu-item"> <a href="{% url 'customer:products_filter' 'watches' %}" ><i
                             class="icon fa fa-clock-o"></i>Watches</a>
                     <ul class="dropdown-menu mega-menu">
                         <li class="yamm-content">
@@ -112,7 +112,7 @@
                 </li>
 
 
-                <li class="dropdown menu-item"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                <li class="dropdown menu-item"> <a href="{% url 'customer:products_filter' 'jewellery' %}" ><i
                             class="icon fa fa-diamond"></i>Jewellery</a>
                     <ul class="dropdown-menu mega-menu">
                         <li class="yamm-content">
@@ -178,7 +178,7 @@
                 </li>
                 <!-- /.menu-item -->
 
-                <li class="dropdown menu-item"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                <li class="dropdown menu-item"> <a href="{% url 'customer:products_filter' 'health & beauty' %}" ><i
                             class="icon fa fa-heartbeat"></i>Health and Beauty</a>
                     <ul class="dropdown-menu mega-menu">
                         <li class="yamm-content">
@@ -221,16 +221,16 @@
                 </li>
 
 
-                <li class="dropdown menu-item"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                <li class="dropdown menu-item"> <a href="{% url 'customer:products_filter' 'kids & babies' %}" ><i
                             class="icon fa fa-paper-plane"></i>Kids and Babies</a>
                 </li>
 
 
-                <li class="dropdown menu-item"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                <li class="dropdown menu-item"> <a href="{% url 'customer:products_filter' 'sports' %}" ><i
                             class="icon fa fa-futbol-o"></i>Sports</a>
 
 
-                <li class="dropdown menu-item"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                <li class="dropdown menu-item"> <a href="{% url 'customer:products_filter' 'home & garden' %}" ><i
                             class="icon fa fa-envira"></i>Home and Garden</a>
                 </li>
 
@@ -626,7 +626,7 @@
                     <a href="{% url 'customer:product_detail' product.id %}">
                         <div class="cards">
 
-                            <img src="{{ product.p_image.url }}" alt="t-shirt" width="100%">
+                            <img src="{{ product.p_image.url }}" alt="t-shirt" width="100%"  style="min-height: 300px; max-height: 300px;">
 
                             <section class="details">
                                 <div class="min-details">

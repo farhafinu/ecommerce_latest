@@ -8,6 +8,8 @@ urlpatterns = [
     path('',views.customer_home,name='home'),
     path('my-cart',views.my_cart, name='cart'),
     path('my-order',views.my_order, name='order'),
+    path('products',views.product_list, name='products'),
+    path('products/<str:category>',views.product_filter, name='products_filter'),
     path('p-detail/<int:product_id>',views.product_detail, name='product_detail'),
     path('myaccount',views.my_ac, name='my-account'),
     path('edit_profile',views.editprofile, name='edit_profile'),
@@ -21,6 +23,8 @@ urlpatterns = [
     path("order_payment", views.order_payment, name="orderpayment"),
     path("updatepayment",views.updatepayment, name="updatepayment"),
     path("checkout",views.checkout, name="checkout"),
+    path("search",views.search_products, name="search_products"),
+
     path("update",views.update, name="update"),
     path('change_password',views.change_password,name='change_password'),
     

@@ -402,24 +402,28 @@
           <!-- /.contact-row -->
           <!-- ============================================================= SEARCH AREA ============================================================= -->
           <div class="search-area">
-            <form>
+            <form action="{% url 'customer:search_products' %}" method="POST">
               <div class="control-group">
                 <ul class="categories-filter animate-dropdown">
                   <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown"
                       href="category.html">Categories <b class="caret"></b></a>
                     <ul class="dropdown-menu" role="menu">
                       <li class="menu-header">Computer</li>
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Clothing</a>
+                      <li role="presentation"><a  tabindex="-1" href="{% url 'customer:products_filter' 'clothing' %}">- Clothing</a>
                       </li>
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Electronics</a>
+                      <li role="presentation"><a   tabindex="-1" href="{% url 'customer:products_filter' 'electronics' %}">- Electronics</a>
                       </li>
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Shoes</a></li>
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Watches</a></li>
+                      <li role="presentation"><a  tabindex="-1" href="{% url 'customer:products_filter' 'shoes' %}">- Shoes</a></li>
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'customer:products_filter' 'watches' %}">- Watches</a></li>
                     </ul>
                   </li>
                 </ul>
-                <input class="search-field" placeholder="Search here..." />
-                <a class="search-button" href="#"></a>
+                
+                  {% csrf_token %}
+                <input class="search-field" name="search_text"placeholder="Search here..." />
+                <button type="submit"  class="search-button" ></button>
+              
+               
               </div>
             </form>
           </div>
@@ -433,10 +437,28 @@
 
           <div class="dropdown dropdown-cart"> <a href="#" class="dropdown-toggle lnk-cart">
               <div class="items-cart-inner">
+                
                 <div class="basket">
-                  <div class="basket-item-count"><span class="count">2</span></div>
-                  <div class="total-price-basket"> <span class="lbl">Shopping Cart</span> <span
-                      class="value">$4580</span> </div>
+              <div class="basket-item-count">
+                <span class="count">
+                
+                {{ request.session.cart_count }}</span>
+              
+              </div>
+                  <div class="total-price-basket"> <span class="lbl">Shopping Cart</span> <span>Rs : </span> 
+                    <span
+                     id="cart_total" style="font-size: 20px; font-weight: bold;">
+                     
+                     {% if request.session.c_id %}
+                     {{ request.session.cart_total }}
+                    
+                     {% else %}
+                      0
+                     {% endif %}
+                    
+                    </span>
+                    
+                    </div>
                 </div>
               </div>
             </a>
@@ -499,28 +521,34 @@
             <div class="nav-outer">
               <ul class="nav navbar-nav">
                 <li class="active dropdown"> <a href="{% url 'customer:home' %}">Home</a> </li>
-                <li class="dropdown yamm mega-menu"> <a href="home.html" class="dropdown-toggle"
-                    data-toggle="dropdown">Clothing</a>
+                <li class="dropdown mega-menu">
+                  <a href="{% url 'customer:products' %}" >All  </a>
+                  <ul class="dropdown-menu container">
+                    <li>
+                    </li>
+                  </ul>
+                </li>
+                <li class="dropdown yamm mega-menu"> <a href="{% url 'customer:products_filter' 'clothing' %}"  
+                    >Clothing</a>
                   <ul class="dropdown-menu container">
                     <li>
 
                     </li>
                   </ul>
                 </li>
+               
                 <li class="dropdown mega-menu">
-                  <a href="category.html" class="dropdown-toggle" data-toggle="dropdown">Electronics <span
-                      class="menu-label hot-menu hidden-xs">hot</span> </a>
+                  <a href="{% url 'customer:products_filter' 'electronics' %}" >Electronics  </a>
                   <ul class="dropdown-menu container">
                     <li>
                     </li>
                   </ul>
                 </li>
-                <li class="dropdown hidden-sm"> <a href="category.html">Health & Beauty <span
-                      class="menu-label new-menu hidden-xs">new</span> </a> </li>
-                <li class="dropdown hidden-sm"> <a href="category.html">Watches</a> </li>
-                <li class="dropdown"> <a href="contact.html">Jewellery</a> </li>
-                <li class="dropdown"> <a href="contact.html">Shoes</a> </li>
-                <li class="dropdown"> <a href="contact.html">Kids & Girls</a> </li>
+                <li class="dropdown hidden-sm"> <a href="{% url 'customer:products_filter' 'health & beauty' %}">Health & Beauty  </a> </li>
+                <li class="dropdown hidden-sm"> <a href="{% url 'customer:products_filter' 'watches' %}">Watches</a> </li>
+                <li class="dropdown"> <a href="{% url 'customer:products_filter' 'jewellery' %}">Jewellery</a> </li>
+                <li class="dropdown"> <a href="{% url 'customer:products_filter' 'shoes' %}">Shoes</a> </li>
+                <li class="dropdown"> <a href="{% url 'customer:products_filter' 'kids & babies' %}">Kids & Babies</a> </li>
                 {% if not 'c_id' in request.session %}
                 </li>
                 <li class="dropdown  navbar-right "> <a href="#signup" data-toggle="modal"

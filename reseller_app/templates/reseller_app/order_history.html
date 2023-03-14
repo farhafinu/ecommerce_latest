@@ -101,7 +101,7 @@
             
         </tr>
         {% for order in details %}
-        {% if order.status == 'paid' %}
+       
         <tr>
             <td>{{forloop.counter}}</td>
             <td>{{order.date}}</td>
@@ -114,7 +114,7 @@
             <td>{{order.price}}</td>
              
         </tr>
-        {% endif %}
+        
         {% endfor %}
        
       

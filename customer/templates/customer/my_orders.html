@@ -42,50 +42,46 @@
 
 <body class="cnt-home">
 	<!-- header start  -->
-	{% include 'customer/header.html' %}
-	<!-- header end  -->
-
 	
-	<!-- <div class="col-3">
-		<div class="card" style="width: 18rem;">
-			
-			<div class="card-body">
-			  <!-- <h2 class="card-title">Product Count</h2> -->
-			  <!-- <p class="card-text"> <h3 style="color:blue;">{{i.productid.p_name }}::{{i.status}} {{i.date}}<br></h3></p>  -->
-			  <!-- to display the count of customers,The count function is calling from views.py[count()] and the count of the customer is passing from views.py-->
-			  
-			<!-- </div>
-		  </div>
-	</div>  -->
-	<table class="table table-hover  table-striped">
-        <tr>
-            <th>Sl.No</th>
-			<th>Product image</th>
-            <th>Name</th>
-            <th>status</th>
-            <th>Date</th>
+	<div style="min-height: 500px;">
+		{% include 'customer/header.html' %}
 
-                      
-            
-        </tr>
-		{% for i in orders %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-			<td><img src="{{i.productid.p_image.url}}" alt="" width="150px" height="150px"></td>
-			
-            <td>{{i.productid.p_name }}</td>
-            <td>{{i.status}}</td>
-            <td>{{i.date}}</td>
-			<!-- <td>{{i.price}}</td> -->
-           <!-- <td><img src="{{reselle.s_pic.url}}" alt="" width="150px" height="150px"></td> -->
+		{% if orders %}
+		 
+		<table class="table table-hover  table-striped">
+			<tr>
+				<th>Sl.No</th>
+				<th>Product image</th>
+				<th>Name</th>
+				<th>status</th>
+				<th>Date</th>
+	
+						  
+				
+			</tr>
+			{% for i in orders %}
+			<tr>
+				<td>{{forloop.counter}}</td>
+				<td><img src="{{i.productid.p_image.url}}" alt="" width="150px" height="150px"></td>
+				
+				<td>{{i.productid.p_name }}</td>
+				<td>{{i.status}}</td>
+				<td>{{i.date}}</td>
+				 
+			   
+							
+				 
+			</tr>
+		   {% endfor %}
 		   
-                        
-             
-        </tr>
-       {% endfor %}
-       
-      </table> 
-
+		  </table> 
+		  {% else %}
+	
+		  <h2 style="color:red;"><center>No Recent Orders</center>></h2>
+	
+		  {% endif %}
+	
+	</div>
 	
     
 	

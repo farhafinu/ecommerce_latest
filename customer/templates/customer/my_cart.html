@@ -84,7 +84,7 @@
 											
 										</td>
 										<td class="cart-product-edit">
-											<input type="number" class="update-qty"  data-item="{{item.product.id}}" value="{{item.qty}}"  id="qty_{{item.product.id}}">
+											<input type="number" class="update-qty form-control"min=1 max="{{item.product.p_stock}}" style="width: 70px;" data-item="{{item.product.id}}" value="{{item.qty}}"  id="qty_{{item.product.id}}">
 											<span id="out_{{item.product.id}}" ></span>
 										</td>
 											   
@@ -196,7 +196,8 @@
 										{
 											sub = 	qty * price
 										$('#total_'+id).text("Rs:"+sub)
-										$('#grand_total').text("Rs:"+response.data)
+										$('#grand_total').text(response.data)
+										$('#cart_total').text(response.data)
 										$('#out_'+id).text("")
 										}
 										else if(response.status == false){

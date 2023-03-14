@@ -8,12 +8,27 @@ from reseller_app.models import Product, Reseller
 from django.db.models import F,Sum
 from django.http import JsonResponse
 import razorpay
+from django.db.models import Q
+from django.core.paginator import Paginator
 from django.conf import settings
 
 
 # Create your views here.
 
 def customer_home(request):
+
+    if 'c_id' in request.session:
+
+        cart_count = AddCart.objects.filter(customer = request.session['c_id']).count()
+        request.session['cart_count'] = cart_count
+        print('******',cart_count)
+        cart2=AddCart.objects.filter(customer = request.session['c_id']).annotate(total_price = F('product__p_price') * F('qty'))
+        sum=0
+        for i in cart2:
+            sum=sum+i.total_price
+        
+        request.session['cart_total'] = sum
+
     msg = ""
     if request.method =='GET':
 
@@ -99,22 +114,56 @@ def my_cart(request):
     
     return redirect('customer:view_cart') 
 
+def product_list(request):
+    products = Product.objects.all()
+    paginator = Paginator(products,2)
+    page_number = request.GET.get('page')
+
+    product_list_obj = paginator.get_page(page_number)
+
+    return render(request,'customer/products.html',{'products': product_list_obj,})
+
+def search_products(request):
+    search_text = request.POST['search_text']
+    print(search_text,'0000')
+    products = Product.objects.filter(Q(p_category__icontains = search_text) | Q(p_name__icontains = search_text) )
+    print(products)
+    paginator = Paginator(products,2)
+    page_number = request.GET.get('page')
+
+    product_list_obj = paginator.get_page(page_number)
+
+    return render(request,'customer/products.html',{'products': product_list_obj,})
+
+def product_filter(request, category):
+    products = Product.objects.filter(p_category = category)
+    paginator = Paginator(products,5)
+    page_number = request.GET.get('page')
+
+    product_list_obj = paginator.get_page(page_number)
+
+    return render(request,'customer/products.html',{'products': product_list_obj,})
+
+
+
+
+
 @auth_customer
 def view_cart(request):    
-    cart2=AddCart.objects.annotate(total_price = F('product__p_price') * F('qty'))
+    cart2=AddCart.objects.filter(customer = request.session['c_id']).annotate(total_price = F('product__p_price') * F('qty'))
     sum=0
     for i in cart2:
         sum=sum+i.total_price
     
-    #gt=AddCart.objects.aaggregate(grt =Sum( F('product__p_price') * F('qty')))
-    #gt=cart2.aaggregate(grt=Sum(F('total_price')))   
+     
     request.session['gt']=sum
     return render(request,'customer/my_cart.html',{'cart_items':cart2,'gt':sum})
     
 @auth_customer
-def del_cart_item(reqest,product_id):
-    del_item=AddCart.objects.filter(product_id=product_id,customer_id=reqest.session['c_id'])
+def del_cart_item(request,product_id):
+    del_item=AddCart.objects.filter(product_id=product_id,customer_id=request.session['c_id'])
     del_item.delete()
+    request.session['cart_count'] -=  1  
     return redirect('customer:view_cart') 
 
 @auth_customer
@@ -142,6 +191,8 @@ def product_detail(request,product_id):
                 qty=p_qty,
                 customer_id = request.session['c_id'])
                 cart.save()
+                request.session['cart_count'] += 1
+                
             
         return redirect('customer:view_cart')
 
@@ -220,6 +271,7 @@ def change_qty(request):
         sum=0
         for i in cart2:
             sum=sum+i.total_price
+        request.session['cart_total'] = sum
         msg="qty update successfully"
     
         return JsonResponse({'data':sum ,'status':status})

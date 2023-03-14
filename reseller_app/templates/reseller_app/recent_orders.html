@@ -98,7 +98,8 @@
             <th>Ship Address</th>
             <th>Qty</th>
             <th> Amount</th>
-            <th> Status</th>
+           
+            <th></th>
             
         </tr>
         {% for order in details %}
@@ -113,7 +114,8 @@
             <td>{{order.customer.address}}</td>
             <td>{{order.quantity}}</td>
             <td>{{order.price}}</td>
-            <td>{{order.status}}</td>
+            
+            <td><a href="{% url 'reseller:change_order_status' order.id %}" class="btn btn-danger">Delivered</a></td>
              
         </tr>
 

@@ -67,37 +67,40 @@ def update_stock(request):
 
 
 def recent_orders(request):
-    product=Product.objects.filter(seller_id=request.session['s_id'], status = 'order placed')
-    orderdetails=Order_detail.objects.all()
-    orderlist=[]
-    for products in product:
-        for order in orderdetails:
-            if products.id==order.productid_id:
-                orderlist.append(order.id)
+    orders = Order_detail.objects.filter(productid__seller_id = request.session['s_id'], status = 'paid').select_related('productid')
+
+    print(orders.query)
+    # product=Product.objects.filter(seller_id=request.session['s_id'])
+    # orderdetails=Order_detail.objects.all()
+    # orderlist=[]
+    # for products in product:
+    #     for order in orderdetails:
+    #         if products.id==order.productid_id:
+    #             orderlist.append(order.id)
     
-    oder=Order_detail.objects.filter(id__in=orderlist)
+    # oder=Order_detail.objects.filter(id__in=orderlist)
     
-    return render(request,'reseller_app/recent_orders.html',{'details':oder})
+    return render(request,'reseller_app/recent_orders.html',{'details':orders})
 
 def cancelled_orders(request):
     return render(request,'reseller_app/cancelled_orders.html')
 
 def order_history(request):
-    product=Product.objects.filter(seller_id=request.session['s_id'])
-    orderdetails=Order_detail.objects.all()
-    orderlist=[]
-    for products in product:
-        for order in orderdetails:
-            if products.id==order.productid_id:
-                orderlist.append(order.id)
-    
-    oder=Order_detail.objects.filter(id__in=orderlist)
+    orders = Order_detail.objects.filter(productid__seller_id = request.session['s_id'], status = 'delivered').select_related('productid')
 
-            
+    
+    print(orders)            
         
             
     
-    return render(request,'reseller_app/order_history.html',{'details':oder})
+    return render(request,'reseller_app/order_history.html',{'details':orders})
+
+
+def change_order_status(request,id):
+    order = Order_detail.objects.get(id = id)
+    order.status = 'delivered'
+    order.save()
+    return redirect('reseller:recent_orders')
 
 def change_password(request):
     if request.method == 'POST':

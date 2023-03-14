@@ -10,6 +10,8 @@ urlpatterns = [
     path('product-add',views.add_product, name='add_product'),
     path('my-order',views.my_order, name='reseller_orders'),
     path('recent-orders',views.recent_orders, name='recent_orders'),
+    path('change-status/<int:id>',views.change_order_status, name='change_order_status'),
+
     path('cancelled-order',views.cancelled_orders, name='cancelled_order'),
     path('history_order',views.order_history, name='order_history'),
     path('password-change',views.change_password, name='change_password'),
